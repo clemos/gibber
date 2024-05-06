@@ -42,6 +42,7 @@
     "clean": "cd node_modules && rm -r marching && rm -r gibber.audio.lib && rm -r gibber.graphics.lib && rm -r gibber.core.lib && rm -r gibberish-dsp && rm -r genish.js",
     "link": "npm link ../genish.js ../gibberish ../gibber.core.lib ../gibber.audio.lib ../marching ../gibber.graphics.lib",
     "build": "npx browserify playground/environment.js -p esmify > playground/bundle.js",
+    "watch": "npx watchify playground/environment.js -p esmify -o playground/bundle.js",
     "postinstall": "cd node_modules/marching; npm i; cd ../gibberish-dsp; npm link genish.js"
   },
   "repository": {
