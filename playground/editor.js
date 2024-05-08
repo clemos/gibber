@@ -189,15 +189,6 @@ mac     | command + option + j  |  command + option + i
    ***********************************************/`
 
 module.exports = function( Gibber, element = '#editor', userEditable=true ) {
-
-  const keys = {
-    w:0,
-    a:0,
-    s:0,
-    d:0,
-    alt:0
-  }
-  const editor = {}
   const cm = CodeMirror( document.querySelector( element ), {
     mode:   'javascript',
     value:  startingText, 
@@ -383,6 +374,16 @@ fm = FM({ feedback:.0015, decay:1/2 })
   return [cm,environment] 
 }
 
+const CodeMirrorShortcuts = {
+  clear( cm, ...args ) {
+    Gibber.clear()
+
+    for( let key of environment.proxies ) delete window[ key ]
+    environment.proxies.length = 0
+    //e.preventDefault()
+  },
+}
+
 CodeMirror.keyMap.playground =  {
   fallthrough:'default',
 
@@ -411,19 +412,9 @@ CodeMirror.keyMap.playground =  {
   //},
   'Ctrl-\\'( cm ) { environment.console.clear() }, 
 
-  'Ctrl-.'( cm, ...args ) {
-    Gibber.clear()
-
-    for( let key of environment.proxies ) delete window[ key ]
-    environment.proxies.length = 0
-    //e.preventDefault()
-  },
-  'Shift-Ctrl-.'( cm ) {
-    Gibber.clear()
-
-    for( let key of environment.proxies ) delete window[ key ]
-    environment.proxies.length = 0
-  },
+  'Ctrl-.': CodeMirrorShortcuts.clear,
+  'Shift-Ctrl-.': CodeMirrorShortcuts.clear,
+  'Ctrl-;': CodeMirrorShortcuts.clear,
   //'Shift-Ctrl-C'(cm) { toggleSidebar() },
 
   "Shift-Ctrl-=": function(cm) {
